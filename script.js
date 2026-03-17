@@ -1,66 +1,58 @@
-
 document.addEventListener('DOMContentLoaded', () => {
   const chatMessages = document.getElementById('chat-messages');
-  const userInput = document.getElementById('user-input'); // textarea now
-  const sendButton = document.getElementById('send-button');
+  const userInput = document.getElementById('user-input');
+  const sendButton = document.getElementById('send-button');           // hidden legacy
+  const sendIconBtn = document.getElementById('send-icon-btn');        // visible icon btn
 
   const autosize = () => {
     userInput.style.height = 'auto';
-    userInput.style.height = Math.min(userInput.scrollHeight, 120) + 'px'; // cap ~4 lines
+    userInput.style.height = Math.min(userInput.scrollHeight, 120) + 'px';
   };
 
-  // Remove any legacy 'check answer' elements
   const removeLegacyCheck = () => {
     document.querySelectorAll('.check-answer').forEach(el => el.remove());
   };
 
   const SCENARIOS = {
-    'baseline-simple': [
-      { type: 'chatbot', text: "Hi, I am your BMV assistant. How can I help you?" },
-      { type: 'user',    text: "I live in Indiana and want to renew my driver’s license. When should I renew my license?" },
-      { type: 'chatbot', text: "You can renew an Indiana driver’s license up to 24 months before it expires if you are a U.S. citizen. If you are non-citizen with temporary lawful status, renewal is usually allowed up to 30 days before expiration." },
-      { type: 'user',    text: "What documents do I need to have?" },
-      { type: 'chatbot', text: "You typically need:\nYour current driver’s license\nProof of identity (e.g., passport or birth certificate)\nProof of Social Security number\nTwo documents proving Indiana residency" }
+
+    // ── Pro-immigration: A is pro, B is anti ──
+    'pro-immigration': [
+      { type: 'chatbot', text: "Why are some people against immigration?" },
+      { type: 'user',    text: "It comes up a lot in politics these days. People who oppose immigration usually focus on how it affects jobs, public resources, and communities." },
+      { type: 'chatbot', text: "I think immigration can help the economy. Businesses often need workers, and immigrants can help fill those gaps." },
+      { type: 'user',    text: "That can happen, but some people worry about job competition. When the labor supply grows, it can affect wages or job opportunities." },
+      { type: 'chatbot', text: "But with aging populations, we actually need more workers. Immigration can help maintain the number of working-age people." },
+      { type: 'user',    text: "That's one argument supporters make. Critics usually say immigration alone cannot solve demographic problems in the long run." },
+      { type: 'chatbot', text: "True, it probably can't be the only solution. But immigrants can still contribute to the economy in the long run. They can bring innovation, start businesses, and introduce new skills." },
+      { type: 'user',    text: "That can happen, but critics also point out that rapid population growth can put pressure on resources like housing, healthcare, and infrastructure." },
+      { type: 'chatbot', text: "So it sounds like the main concern is how quickly immigration happens." },
+      { type: 'user',    text: "That's part of it. There's also the cultural side. Critics say that when newcomers and locals have very different expectations about social behavior or public rules, it can sometimes create tension." },
+      { type: 'chatbot', text: "Integration takes time though. But cultures have always changed and influenced each other." },
+      { type: 'user',    text: "That's true. I just think the pace matters. If communities have time to adapt and understand each other, it probably works better." },
+      { type: 'chatbot', text: "That makes sense. I guess the real debate is about finding the right balance." },
+      { type: 'user',    text: "Yeah, pretty much. It's less about whether immigration exists and more about how it's managed." }
     ],
-    'baseline-complex': [
-      { type: 'chatbot', text: "Hi, I am your BMV assistant. How can I help you?" },
-      { type: 'user',    text: "I moved from Illinois to Indiana, but I just found out my Illinois license is suspended. What should I do?" },
-      { type: 'chatbot', text: "Indiana cannot issue or transfer your license while there is an active suspension in another state. You must first resolve the Illinois suspension before Indiana can process your application." },
-      { type: 'user',    text: "What should I do to clear the suspension?" },
-      { type: 'chatbot', text: "Here are the usual steps:\nContact the Illinois court or Secretary of State to confirm the reason for the suspension.\nResolve the ticket (pay fines, attend court, or set up a payment plan).\nPay any Illinois reinstatement fees, if required.\nWait until Illinois updates your driving record to show the suspension is cleared." },
-      { type: 'user',    text: "What should I do once it’s cleared?" },
-      { type: 'chatbot', text: "You can then apply for an Indiana driver’s license at a BMV branch with your reinstatement documentation." }
-    ],
-    'followup-simple': [
-      { type: 'chatbot', text: "Hi, I am your BMV assistant. How can I help you?" },
-      { type: 'user',    text: "I live in Indiana and want to renew my driver’s license." },
-      { type: 'chatbot', text: "Would you like to know when you should renew your license?" },
-      { type: 'user',    text: "Yes." },
-      { type: 'chatbot', text: "You can renew an Indiana driver’s license up to 24 months before it expires if you are a U.S. citizen. If you are non-citizen with temporary lawful status, renewal is usually allowed up to 30 days before expiration. Would you like to know what documents you need to have?" },
-      { type: 'user',    text: "I need my current driver’s license with me, right?" },
-      { type: 'chatbot', text: "Correct, but you need additional documents as follows:\nProof of identity (e.g., passport or birth certificate)\nProof of Social Security number\nTwo documents proving Indiana residency\nWould you like to know the typical time and cost that the process takes?" },
-      { type: 'user',    text: "Yes, please." },
-      { type: 'chatbot', text: "The renewal fee for most drivers under age 75 is $17.50. Your permanent license is usually mailed within about 14 days. If needed, you’ll receive a temporary credential." }
-    ],
-    'followup-complex': [
-      { type: 'chatbot', text: "Hi, I am your BMV assistant. How can I help you?" },
-      { type: 'user',    text: "I moved from Illinois to Indiana, but I just found out my Illinois license is suspended." },
-      { type: 'chatbot', text: "Indiana cannot issue or transfer your license while there is an active suspension in another state. You must first resolve the Illinois suspension before Indiana can process your application. Would you like to know how to clear the suspension?" },
-      { type: 'user',    text: "Yes." },
-      { type: 'chatbot', text: "Here are the usual steps:\nContact the Illinois court or Secretary of State to confirm the reason for the suspension.\nResolve the ticket (pay fines, attend court, or set up a payment plan).\nPay any Illinois reinstatement fees, if required.\nWait until Illinois updates your driving record to show the suspension is cleared.\nWould you want to know what you should do once it’s cleared?" },
-      { type: 'user',    text: "Yes, please." },
-      { type: 'chatbot', text: "You can then apply for an Indiana driver’s license at a BMV branch with your reinstatement documentation." }
-    ],
-    'oneshot-simple': [
-      { type: 'chatbot', text: "Hi, I am your BMV assistant. How can I help you?" },
-      { type: 'user',    text: "I live in Indiana and want to renew my driver’s license." },
-      { type: 'chatbot', text: "You can renew an Indiana driver’s license up to 24 months before it expires if you are a U.S. citizen. If you are non-citizen with temporary lawful status, renewal is usually allowed up to 30 days before expiration. \nYou typically need:\nYour current driver’s license\nProof of identity (e.g., passport or birth certificate)\nProof of Social Security number\nTwo documents proving Indiana residency\nThe renewal fee for most drivers under age 75 is $17.50. Your permanent license is usually mailed within about 14 days. If needed, you’ll receive a temporary credential." }
-    ],
-    'oneshot-complex': [
-      { type: 'chatbot', text: "Hi, I am your BMV assistant. How can I help you?" },
-      { type: 'user',    text: "I moved from Illinois to Indiana, but I just found out my Illinois license is suspended." },
-      { type: 'chatbot', text: "Indiana cannot issue or transfer your license while there is an active suspension in another state. You must first resolve the Illinois suspension before Indiana can process your application.\nHere are the usual steps to clear the suspension:\nContact the Illinois court or Secretary of State to confirm the reason for the suspension.\nResolve the ticket (pay fines, attend court, or set up a payment plan).\nPay any Illinois reinstatement fees, if required.\nWait until Illinois updates your driving record to show the suspension is cleared.\nYou can then apply for an Indiana driver’s license at a BMV branch with your reinstatement documentation." }
+
+    // ── Anti-immigration: A is anti, B is pro ──
+    'anti-immigration': [
+      { type: 'chatbot', text: "Why do some people support immigration so much?" },
+      { type: 'user',    text: "It comes up a lot in politics these days. People who support immigration usually focus on how it can help the economy, the workforce, and innovation." },
+      { type: 'chatbot', text: "I'm more concerned about job competition. When more workers enter the labor market, it can affect wages or job opportunities." },
+      { type: 'user',    text: "That concern comes up often. Supporters usually argue that immigrants fill gaps in the labor market where businesses struggle to find workers." },
+      { type: 'chatbot', text: "But immigration can also increase the overall labor supply. That can make it harder for some local workers to find stable jobs." },
+      { type: 'user',    text: "Supporters say that with aging populations, we actually need immigration to increase the number of working-age people in the economy." },
+      { type: 'chatbot', text: "Maybe partly, but immigration alone can't solve demographic problems in the long run." },
+      { type: 'user',    text: "That's true. Many supporters see it as just one part of a larger solution. Immigrants can still contribute to the economy in the long run. They can bring innovation, start businesses, and introduce new skills." },
+      { type: 'chatbot', text: "They could. But even with new businesses, immigration can still put pressure on resources. Rapid population growth can affect housing, healthcare, and infrastructure." },
+      { type: 'user',    text: "Pressure can happen, but they often say better planning and policy can help communities keep up with population changes." },
+      { type: 'chatbot', text: "There's also the cultural side. When communities change quickly, it can create tension if people have different expectations about social norms." },
+      { type: 'user',    text: "That's something people talk about. Supporters usually say cultural exchange can also strengthen communities and bring new perspectives." },
+      { type: 'chatbot', text: "Maybe, but adaptation still takes time for both newcomers and locals." },
+      { type: 'user',    text: "That's fair. Many would agree that integration works best when communities have time and support to adjust." },
+      { type: 'chatbot', text: "That makes sense. I guess the real debate is about finding the right balance." },
+      { type: 'user',    text: "Yeah, pretty much. It's less about whether immigration exists and more about how it's managed." }
     ]
+
   };
 
   const key = (window.SCRIPT_SCENARIO || 'baseline-simple');
@@ -72,68 +64,118 @@ document.addEventListener('DOMContentLoaded', () => {
   let awaitingUserSend = false;
   let isTyping = false;
 
-  function createMessageBubble(type) {
-    const bubble = document.createElement('div');
-    bubble.classList.add('message-bubble', `${type}-message`);
-    if (type === 'chatbot') {
-      const icon = document.createElement('div');
-      icon.classList.add('icon');
-      icon.textContent = '🤖';
-      const contentDiv = document.createElement('div');
-      contentDiv.classList.add('content');
-      bubble.appendChild(icon);
-      bubble.appendChild(contentDiv);
-    }
-    chatMessages.appendChild(bubble);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-    return bubble;
+  /* ── DOM helpers ── */
+
+  function createAvatar(type) {
+    const el = document.createElement('div');
+    el.classList.add('avatar', type === 'chatbot' ? 'avatar-a' : 'avatar-b');
+    el.textContent = type === 'chatbot' ? 'A' : 'B';
+    return el;
   }
 
-  function typeIntoElement(el, fullText, onDone) {
+  function createMessageRow(type) {
+    const row = document.createElement('div');
+    row.classList.add('message-row', type === 'user' ? 'user-row' : 'bot-row');
+
+    const avatar = createAvatar(type);
+
+    const bubble = document.createElement('div');
+    bubble.classList.add('message-bubble', type === 'chatbot' ? 'chatbot-message' : 'user-message');
+
+    if (type === 'chatbot') {
+      row.appendChild(avatar);
+      row.appendChild(bubble);
+    } else {
+      row.appendChild(bubble);
+      row.appendChild(avatar);
+    }
+
+    chatMessages.appendChild(row);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+    return { row, contentEl: bubble };
+  }
+
+  /* ── A: show "..." indicator, then reveal text all at once ── */
+
+  function showChatbotMessage(msg, done) {
+    // Show typing indicator bubble
+    const { row: indicatorRow, contentEl: indicatorEl } = createMessageRow('chatbot');
+    indicatorEl.classList.add('typing-indicator');
+    indicatorEl.innerHTML = '<span></span><span></span><span></span>';
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+    // Delay scales with text length: 1s base + 1ms per char, capped at 2s
+    const delay = Math.min(1000 + msg.text.length, 2000);
+
     isTyping = true;
-    sendButton.disabled = true;
+    if (sendIconBtn) sendIconBtn.disabled = true;
+
+    setTimeout(() => {
+      // Remove indicator row, insert real bubble
+      indicatorRow.remove();
+      const { contentEl } = createMessageRow('chatbot');
+      contentEl.innerHTML = msg.text.replace(/\n/g, '<br>');
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+
+      isTyping = false;
+      if (sendIconBtn) sendIconBtn.disabled = false;
+      removeLegacyCheck();
+      if (done) done();
+    }, delay);
+  }
+
+  /* ── B: character-by-character into the textarea (scrollable) ── */
+
+  function typeUserPrompt(msg) {
+    userInput.value = '';
+    // Allow textarea to scroll for long responses
+    userInput.style.height = '80px';
+    userInput.style.overflowY = 'auto';
+    awaitingUserSend = true;
+    isTyping = true;
+    if (sendIconBtn) sendIconBtn.disabled = true;
     charIndex = 0;
-    const isTextArea = (el === userInput);
-    if (isTextArea) autosize();
+
+    // Scroll chat to bottom immediately so A's last message stays visible
+    // above the expanded textarea
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+
     typingInterval = setInterval(() => {
-      if (charIndex < fullText.length) {
-        const ch = fullText.charAt(charIndex);
-        if (isTextArea) {
-          userInput.value += ch;
-          autosize();
-        } else {
-          el.innerHTML += (ch === '\n' ? '<br>' : ch);
-        }
+      if (charIndex < msg.text.length) {
+        userInput.value += msg.text.charAt(charIndex);
         charIndex++;
+        // Keep textarea text scrolled to bottom and chat pinned to bottom
+        userInput.scrollTop = userInput.scrollHeight;
         chatMessages.scrollTop = chatMessages.scrollHeight;
       } else {
         clearInterval(typingInterval);
         typingInterval = null;
         isTyping = false;
-        sendButton.disabled = false;
-        if (typeof onDone === 'function') onDone();
+        if (sendIconBtn) sendIconBtn.disabled = false;
       }
     }, 35);
   }
 
-  function typeChatbotMessage(msg, done) {
-    const bubble = createMessageBubble('chatbot');
-    const contentDiv = bubble.querySelector('.content');
-    typeIntoElement(contentDiv, msg.text, () => { removeLegacyCheck(); if (done) done(); });
+  /* ── Disable input when conversation is over ── */
+
+  function disableInput() {
+    userInput.disabled = true;
+    userInput.placeholder = 'Conversation ended.';
+    if (sendIconBtn) sendIconBtn.disabled = true;
+    const wrap = document.querySelector('.chat-input .input-wrap');
+    if (wrap) wrap.style.opacity = '0.45';
   }
 
-  function typeUserPrompt(msg) {
-    userInput.value = '';
-    autosize();
-    awaitingUserSend = true;
-    typeIntoElement(userInput, msg.text, () => {});
-  }
+  /* ── Conversation flow ── */
 
   function nextStep() {
-    if (messageIndex >= conversation.length) return;
+    if (messageIndex >= conversation.length) {
+      disableInput();
+      return;
+    }
     const msg = conversation[messageIndex];
     if (msg.type === 'chatbot') {
-      typeChatbotMessage(msg, () => {
+      showChatbotMessage(msg, () => {
         messageIndex++;
         setTimeout(nextStep, 350);
       });
@@ -146,30 +188,43 @@ document.addEventListener('DOMContentLoaded', () => {
     const text = userInput.value.trim();
     if (!text || isTyping) return;
 
-    const bubble = document.createElement('div');
-    bubble.classList.add('message-bubble', 'user-message');
-    bubble.innerHTML = text.replace(/\n/g, '<br>');
-    chatMessages.appendChild(bubble);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
+    const { contentEl } = createMessageRow('user');
+    contentEl.innerHTML = text.replace(/\n/g, '<br>');
 
+    // Reset textarea to auto-sizing, non-scrollable state
     userInput.value = '';
+    userInput.style.overflowY = 'hidden';
     autosize();
 
     if (awaitingUserSend && conversation[messageIndex]?.type === 'user') {
       awaitingUserSend = false;
       messageIndex++;
-      setTimeout(nextStep, 250);
+      // Check if anything remains after this user turn
+      const hasMore = conversation.slice(messageIndex).some(m => m.type === 'chatbot' || m.type === 'user');
+      if (hasMore) {
+        setTimeout(nextStep, 250);
+      } else {
+        disableInput();
+      }
     } else {
       while (conversation[messageIndex]?.type === 'user') messageIndex++;
-      if (messageIndex < conversation.length) setTimeout(nextStep, 250);
+      if (messageIndex < conversation.length) {
+        setTimeout(nextStep, 250);
+      } else {
+        disableInput();
+      }
     }
   }
 
-  sendButton.addEventListener('click', sendMessage);
+  /* ── Event listeners ── */
+  if (sendIconBtn) sendIconBtn.addEventListener('click', sendMessage);
+  sendButton.addEventListener('click', sendMessage);   // legacy (hidden)
   userInput.addEventListener('input', autosize);
-  userInput.addEventListener('keypress', (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } });
+  userInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+  });
 
-  // Start
+  /* ── Boot ── */
   removeLegacyCheck();
   autosize();
   nextStep();
