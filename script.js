@@ -14,7 +14,25 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const SCENARIOS = {
+    // ── National Parks Debate: A prefers Yellowstone, B prefers Yosemite ──
+    'example': [
+      { type: 'chatbot', text: "Which national park do you think is the best in the US?" },
+      { type: 'user',    text: "That’s tough, but I’d say Yosemite. The scenery there is hard to beat." },
+      { type: 'chatbot', text: "Yosemite is amazing, but I think Yellowstone stands out more. It has geysers, wildlife, and huge variety." },
+      { type: 'user',    text: "True, Yellowstone is diverse, but Yosemite’s granite cliffs and waterfalls feel more iconic and dramatic." },
+      { type: 'chatbot', text: "But Yellowstone has things you can’t really see anywhere else, like Old Faithful and all those geothermal features." },
+      { type: 'user',    text: "That’s fair, but Yosemite feels more visually cohesive. Everything from El Capitan to Half Dome just fits together beautifully." },
+      { type: 'chatbot', text: "I get that, but Yellowstone also has wildlife like bison and wolves roaming around. That adds a whole different experience." },
+      { type: 'user',    text: "Wildlife is a big plus, but Yosemite’s hiking and climbing opportunities are world-class." },
+      { type: 'chatbot', text: "Yellowstone has great hiking too, plus it’s massive. You can explore for days and still not see everything." },
+      { type: 'user',    text: "That size can be overwhelming though. Yosemite is a bit more focused, which makes it easier to experience the highlights." },
+      { type: 'chatbot', text: "Maybe, but that sense of scale in Yellowstone makes it feel more like a true wilderness." },
+      { type: 'user',    text: "I guess it depends on what you want. Yosemite is about stunning landscapes, while Yellowstone is more about variety and uniqueness." },
+      { type: 'chatbot', text: "Yeah, that sounds right. Both are incredible, just in different ways." },
+      { type: 'user',    text: "Exactly. Picking the best probably comes down to personal preference." }
+    ],
 
+    
     // ── Pro-immigration: A is pro, B is anti ──
     'pro-immigration': [
       { type: 'chatbot', text: "Why are some people against immigration?" },
