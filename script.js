@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
       { type: 'user',    text: "It's not about \"rewarding.\" A lot of them came because there was no real legal option. The system is basically impossible for many people." },
       { type: 'chatbot', text: "I agree the system has flaws, especially for certain groups. But there are still legal pathways, and many people follow them despite the difficulty." },
       { type: 'user',    text: "But for low-skilled workers, those pathways barely exist. People say \"come legally,\" but that's not realistic for everyone." },
-      { type: 'chatbot', text: "That's a fair criticism of the system. Still, the solution should not be to grant citizenship after the fact. That risks boarder safety and undermining the rules entirely." },
+      { type: 'chatbot', text: "That's a fair criticism of the system. Still, the solution should not be to grant citizenship after the fact. That risks border safety and undermining the rules entirely." },
       { type: 'user',    text: "I'm talking about people already here, working, paying taxes, raising families. Deporting them isn't realistic." },
       { type: 'chatbot', text: "Mass deportation would be difficult. But difficulty doesn't automatically justify legalization. Governments enforce laws even when it's costly." },
       { type: 'user',    text: "It's not just cost. It would disrupt the economy that depend on their labor and separate families." },
@@ -59,13 +59,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ── Anti-immigration: A is anti, B is pro ──
     'anti-immigration': [
-      { type: 'user',    text: "I think undocumented immigrants should be deported. At some point, you have to enforce the law and protect our boarder." },
+      { type: 'user',    text: "I think undocumented immigrants should be deported. At some point, you have to enforce the law and protect our border." },
       { type: 'chatbot', text: "I understand the practical concern. However, many undocumented immigrants have built lives here. Should they be removed despite that?" },
       { type: 'user',    text: "I mean, they came here illegally. Why should they be rewarded and get to stay for breaking the law?" },
       { type: 'chatbot', text: "It's not necessarily about \"rewarding\" that. Many came because there wasn't a realistic legal option. The system can be extremely difficult to navigate." },
       { type: 'user',    text: "I get that the system has issues. But there are still legal pathways, and a lot of people go through them the right way." },
       { type: 'chatbot', text: "That's true. Still, for low-skilled workers, those pathways are very limited. So \"just come legally\" isn't always realistic." },
-      { type: 'user',    text: "That might be a problem with the system, sure. But I don't think the fix is just giving citizenship after the fact. That just ignores boarder safety and the rules entirely." },
+      { type: 'user',    text: "That might be a problem with the system, sure. But I don't think the fix is just giving citizenship after the fact. That just ignores border safety and the rules entirely." },
       { type: 'chatbot', text: "I'm referring to people already here, working, paying taxes, raising families. Deporting them all may not be realistic." },
       { type: 'user',    text: "Yeah, it would be hard. But difficulty alone doesn't mean we just give up on enforcing the law." },
       { type: 'chatbot', text: "It's also about impact. Large-scale deportation could affect the economy that depend on their labor and separate families." },
@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
       { type: 'chatbot', text: "Another option often discussed is a pathway with conditions, background checks, taxes, waiting periods." },
       { type: 'user',    text: "I've heard that, but it still feels like it's rewarding people for coming illegally. And it just repeats the same cycle." },
       { type: 'chatbot', text: "That concern comes up often. The challenge is finding a policy that addresses the current situation with a humane solution for people who've built lives here." },
-      { type: 'user',    text: "I understand that. I think the disagreement comes down to priorities, whether we choose humanitarian concerns, or the integrity of the legal system and our boarder." },
+      { type: 'user',    text: "I understand that. I think the disagreement comes down to priorities, whether we choose humanitarian concerns, or the integrity of the legal system and our border." },
       { type: 'chatbot', text: "I would argue that a system which does not account for people's lives may also raise concerns about fairness." },
       { type: 'user',    text: "That's fair. I think that's what makes this so hard, both sides just see fairness differently." },
       { type: 'chatbot', text: "I think that's exactly where the divide is." }
